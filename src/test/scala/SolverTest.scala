@@ -25,10 +25,14 @@ class SolverTest extends FunSuite {
   }
 
   test("test of simplifyMatrix(...)"){
+    //No single preferences
     val pref1 = List(List((1,'G),(2,'G),(3,'M)))
     assert(simplifyMatrix(pref1) == Some((List(), List(List((1,'G),(2,'G),(3,'M))))) )
-
+    //2 single preferences and the matrix can be simplified
     val pref2 = List(List((1,'M)), List((2,'M)), List((1,'G),(2,'G),(3,'M)))
     assert(simplifyMatrix(pref2) == Some((List((1,'M),(2,'M),(3,'M)), List())) )
+    //Impossible to find solution
+    val pref3 = List( List((1,'M)), List((1,'G)) )
+    assert(simplifyMatrix(pref3) == None)
   }
 }
