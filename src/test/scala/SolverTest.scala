@@ -56,16 +56,16 @@ class SolverTest extends FunSuite {
 
   test("test of getOptimalSolution(...)") {
     val solutions = List(List((1,'M)), List((1,'M), (2,'M), (3,'M)), List((1,'M), (2,'M)))
-    assert(getOptimalSolution(solutions) == List((1,'M), (2,'M), (3,'M)))
+    assert(getOptimalSolution(solutions) == List((1,'M)))
   }
 
   test("test of countNumberOfMatteColours(...)") {
     val solution1 = List( (1,'M), (2,'G), (3,'G), (4,'M))
-    assert(countNumberOfMatteColours(solution1) == 2)
+    assert(countNumberOfGlossColours(solution1) == 2)
     val solution2 = List( (1,'G), (2,'G), (3,'G), (4,'G))
-    assert(countNumberOfMatteColours(solution2) == 0)
+    assert(countNumberOfGlossColours(solution2) == 4)
     val solution3 = List( )
-    assert(countNumberOfMatteColours(solution3) == 0)
+    assert(countNumberOfGlossColours(solution3) == 0)
   }
 
   test("test of solve(...)") {

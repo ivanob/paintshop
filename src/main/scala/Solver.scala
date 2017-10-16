@@ -47,10 +47,10 @@ object Solver {
   }
 
   def getOptimalSolution(validSolutions: List[Preferences]): Preferences ={
-    validSolutions.sortWith((l,r) => countNumberOfMatteColours(l)>countNumberOfMatteColours(r)).head
+    validSolutions.sortWith((l,r) => countNumberOfGlossColours(l)>countNumberOfGlossColours(r)).head
   }
 
-  def countNumberOfMatteColours(pref: Preferences):Int ={
+  def countNumberOfGlossColours(pref: Preferences):Int ={
     pref.groupBy(_._2).get('G) match {
       case Some(x) => x.length
       case None => 0
@@ -61,9 +61,9 @@ object Solver {
     val missingColors =
       for{ i<- 1 to numColors
          if(!solution.exists(_._1==i))
-    } yield((i,'M))
+    } yield((i,'G))
     val completeSol = solution ::: missingColors.toList
-    completeSol
+    completeSol.sortBy(_._1)
   }
 
   def solve(userPrefs: UsersPreferences, numColors: Int): Option[Preferences] = {
