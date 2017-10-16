@@ -34,5 +34,8 @@ class SolverTest extends FunSuite {
     //Impossible to find solution
     val pref3 = List( List((1,'M)), List((1,'G)) )
     assert(simplifyMatrix(pref3) == None)
+    //Simplified as much as possible
+    val pref4 = List( List((1,'G)), List((1,'M),(2,'G),(3,'G)), List((2,'M), (3,'M)) )
+    assert(simplifyMatrix(pref4) == Some(List((1,'G)), List(List((2,'G),(3,'G)), List((2,'M), (3,'M)))) )
   }
 }
