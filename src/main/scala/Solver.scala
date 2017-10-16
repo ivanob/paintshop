@@ -52,7 +52,10 @@ object Solver {
   }
 
   def countNumberOfMatteColours(pref: Preferences):Int ={
-    pref.groupBy(_._2)('M).length
+    pref.groupBy(_._2).get('M) match {
+      case Some(x) => x.length
+      case None => 0
+    }
   }
 
   def solve(): Option[Preferences] = ???
