@@ -44,6 +44,16 @@ object Solver {
   }
 
   def isValidSolution(solution: Preferences): Boolean = {
-    
+    solution.length == solution.groupBy(_._1).toList.length
   }
+
+  def getOptimalSolution(validSolutions: List[Preferences]): Preferences ={
+    validSolutions.sortWith((l,r) => countNumberOfMatteColours(l)>countNumberOfMatteColours(r)).head
+  }
+
+  def countNumberOfMatteColours(pref: Preferences):Int ={
+    pref.groupBy(_._2)('M).length
+  }
+
+  def solve(): Option[Preferences] = ???
 }

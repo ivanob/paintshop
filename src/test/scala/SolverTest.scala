@@ -44,4 +44,18 @@ class SolverTest extends FunSuite {
     assert(combinationList(pref) == List( List( (1,'M),(1,'M) ), List( (2,'M),(1,'M) ),
       List( (1,'M),(2,'G) ), List( (2,'M),(2,'G) )) )
   }
+
+  test("test of isValidSolution function"){
+    //is Not valid as colour 1 has 2 different variances
+    val solution = List((1,'G), (2,'M), (1,'M))
+    assert(isValidSolution(solution) == false)
+    //is is valid as each color has a different variety
+    val solution2 = List((1,'G), (2,'M), (3,'M))
+    assert(isValidSolution(solution2) == true)
+  }
+
+  test("test of getOptimalSolution(...)") {
+    val solutions = List(List((1,'M)), List((1,'M), (2,'M), (3,'M)), List((1,'M), (2,'M)))
+    assert(getOptimalSolution(solutions) == List((1,'M), (2,'M), (3,'M)))
+  }
 }
