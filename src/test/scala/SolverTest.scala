@@ -38,4 +38,10 @@ class SolverTest extends FunSuite {
     val pref4 = List( List((1,'G)), List((1,'M),(2,'G),(3,'G)), List((2,'M), (3,'M)) )
     assert(simplifyMatrix(pref4) == Some(List((1,'G)), List(List((2,'G),(3,'G)), List((2,'M), (3,'M)))) )
   }
+
+  test("test of the combinationList generator"){
+    val pref = List( List( (1,'M),(2,'M) ), List( (1,'M), (2,'G) ) )
+    assert(combinationList(pref) == List( List( (1,'M),(1,'M) ), List( (2,'M),(1,'M) ),
+      List( (1,'M),(2,'G) ), List( (2,'M),(2,'G) )) )
+  }
 }

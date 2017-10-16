@@ -35,7 +35,15 @@ object Solver {
         }
       }
     }
+  }
 
+  def combinationList[T](ls:List[List[T]]): List[List[T]] = ls match {
+    case Nil => Nil::Nil
+    case head :: tail => val rec = combinationList[T](tail)
+      rec.flatMap(r => head.map(t => t::r))
+  }
 
+  def isValidSolution(solution: Preferences): Boolean = {
+    
   }
 }
