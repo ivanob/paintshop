@@ -27,8 +27,7 @@ object Solver {
       case xs => {
         if(!isPossible(xs)) None else {
           val simplifiedPref = removePreferences(pref, xs)
-          val a = simplifyMatrix(simplifiedPref)
-          a match {
+          simplifyMatrix(simplifiedPref) match {
             case Some(y) => Some((xs:::y._1, y._2))
             case None => None
           }
@@ -52,11 +51,30 @@ object Solver {
   }
 
   def countNumberOfMatteColours(pref: Preferences):Int ={
-    pref.groupBy(_._2).get('M) match {
+    pref.groupBy(_._2).get('G) match {
       case Some(x) => x.length
       case None => 0
     }
   }
 
-  def solve(): Option[Preferences] = ???
+  def fillMissingColors(solution: Preferences, numColors:Int): Preferences ={
+    val missingColors =
+      for{ i<- 1 to numColors
+         if(!solution.exists(_._1==i))
+    } yield((i,'M))
+    val completeSol = solution ::: missingColors.toList
+    completeSol
+  }
+
+  def solve(userPrefs: UsersPreferences, numColors: Int): Option[Preferences] = {
+    simplifyMatrix(userPrefs) match {
+      case None => None
+      case Some(simplified) => {
+        val comb = combinationList(simplified._2)
+        val validCombs = comb.filter(x => isValidSolution(x))
+        val optimal = getOptimalSolution(validCombs)
+        Some(fillMissingColors(optimal:::simplified._1, numColors))
+      }
+    }
+  }
 }

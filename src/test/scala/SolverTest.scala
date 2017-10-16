@@ -67,4 +67,15 @@ class SolverTest extends FunSuite {
     val solution3 = List( )
     assert(countNumberOfMatteColours(solution3) == 0)
   }
+
+  test("test of solve(...)") {
+    val preferences = List( List( (1,'M),(3,'G),(5,'G) ), List((2,'G), (3,'M), (4,'G)),
+      List((5,'M)) )
+    assert(solve(preferences, 5) == Some(List((1,'G), (2,'G), (3,'G), (4,'G), (5,'M))))
+  }
+
+  test("test of fillMissingColors(...)"){
+    val partialSolution = List( (1,'G), (3,'M))
+    assert(fillMissingColors(partialSolution, 5) == List( (1,'G), (2,'G), (3,'M), (4,'G), (5,'G) ))
+  }
 }
