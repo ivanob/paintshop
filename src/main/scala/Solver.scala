@@ -12,7 +12,7 @@ object Solver {
     * false.
     */
   def isPossible(singlePrefs: Preferences):Boolean = {
-    singlePrefs.groupBy(_._1).exists(x => x._2.length>1) == false
+    singlePrefs.groupBy(_._1).map(x => x._2.map(y => y._2).distinct).exists(_.length!=1) == false
   }
 
   def removePreferences(pref: UsersPreferences, singlePrefs: Preferences): UsersPreferences = {

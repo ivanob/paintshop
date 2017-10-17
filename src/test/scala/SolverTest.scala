@@ -12,6 +12,8 @@ class SolverTest extends FunSuite {
     assert(isPossible(pref)==true)
     val pref2 = List((1,'M),(1,'G),(3,'M))
     assert(isPossible(pref2)==false)
+    val pref3 = List((1,'M),(2,'M),(3,'M))
+    assert(isPossible(pref3)==true)
   }
 
   test("test of removePreferences(...) method"){
@@ -67,7 +69,22 @@ class SolverTest extends FunSuite {
     val solution3 = List( )
     assert(countNumberOfGlossColours(solution3) == 0)
   }
-
+  /**
+    * 2 M
+5 G
+1 G
+5 G 1 G 4 M
+3 G
+5 G
+3 G 5 G 1 G
+3 G
+2 M
+5 G 1 G
+2 M
+5 G
+4 M
+5 G 4 M
+    */
   test("test of solve(...)") {
     val preferences = List( List( (1,'M),(3,'G),(5,'G) ), List((2,'G), (3,'M), (4,'G)),
       List((5,'M)) )
@@ -76,6 +93,10 @@ class SolverTest extends FunSuite {
     assert(solve(impossibleSolution, 1) == None)
     val preferences2 = List( List((1,'G),(2,'M)), List((1,'M)))
     assert(solve(preferences2, 2) == Some(List( (1,'M), (2,'M) )))
+    val preferences3 = List( List((2,'M)), List((5,'G)), List((1,'G)), List((5,'G), (1,'G), (4,'M)),
+      List((3,'G)), List((5,'G)), List((3,'G),(5,'G),(1,'G)), List((3,'G)), List((2,'M)),
+      List((5,'G),(1,'G)), List((2,'M)), List((5,'G)), List((4,'M)), List((5,'G),(4,'M)))
+    assert(solve(preferences3, 5) == Some(List( (1,'G), (2,'M), (3,'G), (4,'M), (5,'G))))
   }
 
   test("test of fillMissingColors(...)"){
