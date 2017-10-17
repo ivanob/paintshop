@@ -28,7 +28,7 @@ object Solver {
         if(!isPossible(xs)) None else {
           val simplifiedPref = removePreferences(pref, xs)
           simplifyMatrix(simplifiedPref) match {
-            case Some(y) => Some((xs:::y._1, y._2))
+            case Some(y) => Some((xs.distinct:::y._1, y._2))
             case None => None
           }
         }
