@@ -17,8 +17,8 @@ object Solver {
 
   def removePreferences(pref: UsersPreferences, singlePrefs: Preferences): UsersPreferences = {
     val optionsTaken = singlePrefs.map(x=>x._1)
-    val removed = pref.map(x => x.filter(y => optionsTaken.contains(y._1)==false ))
-    removed.filter(x => !x.isEmpty)
+    val filtered = pref.filter(_.length>1)
+    filtered.map(x => x.filter(y => !optionsTaken.contains(y._1))).filter(!_.isEmpty)
   }
 
   def simplifyMatrix(pref: UsersPreferences): Option[(Preferences,UsersPreferences)] = {

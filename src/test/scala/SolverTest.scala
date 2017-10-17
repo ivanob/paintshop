@@ -69,30 +69,15 @@ class SolverTest extends FunSuite {
     val solution3 = List( )
     assert(countNumberOfGlossColours(solution3) == 0)
   }
-  /**
-    * 2 M
-5 G
-1 G
-5 G 1 G 4 M
-3 G
-5 G
-3 G 5 G 1 G
-3 G
-2 M
-5 G 1 G
-2 M
-5 G
-4 M
-5 G 4 M
-    */
+
   test("test of solve(...)") {
-    val preferences = List( List( (1,'M),(3,'G),(5,'G) ), List((2,'G), (3,'M), (4,'G)),
+/*    val preferences = List( List( (1,'M),(3,'G),(5,'G) ), List((2,'G), (3,'M), (4,'G)),
       List((5,'M)) )
     assert(solve(preferences, 5) == Some(List((1,'G), (2,'G), (3,'G), (4,'G), (5,'M))))
     val impossibleSolution = List( List((1,'G)), List((1,'M)))
     assert(solve(impossibleSolution, 1) == None)
     val preferences2 = List( List((1,'G),(2,'M)), List((1,'M)))
-    assert(solve(preferences2, 2) == Some(List( (1,'M), (2,'M) )))
+    assert(solve(preferences2, 2) == Some(List( (1,'M), (2,'M) )))*/
     val preferences3 = List( List((2,'M)), List((5,'G)), List((1,'G)), List((5,'G), (1,'G), (4,'M)),
       List((3,'G)), List((5,'G)), List((3,'G),(5,'G),(1,'G)), List((3,'G)), List((2,'M)),
       List((5,'G),(1,'G)), List((2,'M)), List((5,'G)), List((4,'M)), List((5,'G),(4,'M)))
