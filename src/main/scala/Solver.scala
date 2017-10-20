@@ -7,9 +7,8 @@ object Solver {
 
   /**
     * Checks if there is any conflict in the list of single preferences.
-    * Single preferences are the preferences from the customers who only
-    * have one of them, so they will always be part of the final solution
-    * (in case that there is a solution).
+    * Single preferences come from the customers who only have one preference, so they will
+    * always be part of the final solution (in case that there is a solution).
     *
     * If there are 2 customers who want the same color in different taste,
     * then there is an inconsistency and returns false.
@@ -22,8 +21,8 @@ object Solver {
     * This function removes the single preferences from the matrix of preferences of all the customers.
     * For instance, if we have 2 customers one of them with (1 M) and the other with ((1 G), (2 M)), we
     * can simplify the matrix removing (1 M) and (1 G), because we know (1 M) will be part of the
-    * solution so (1 G) is impossible to be selected. It returns the customer preferences
-    * without those single preferences nor the preferences that can not happen due to these removals.
+    * solution hence (1 G) is impossible to be selected. It returns the customer preferences
+    * without those single preferences nor the preferences that can not be picked anymore.
     */
   def removeSinglePreferences(pref: UsersPreferences, singlePrefs: Preferences): UsersPreferences = {
     val optionsTaken = singlePrefs.map(x=>x._1)
@@ -93,8 +92,8 @@ object Solver {
   }
 
   /**
-    * In case there are missing colors in the final solution we have
-    * to fill it with the matte version of those colors.
+    * In case there are missing colors in the final solution, we have
+    * to fill it with the matte version of those missing colors.
     */
   def fillMissingColors(solution: Preferences, numColors:Int): Preferences ={
     val missingColors =
