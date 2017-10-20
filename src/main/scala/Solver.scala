@@ -57,7 +57,7 @@ object Solver {
   }
 
   /**
-    * It receives the matrix of preferences (simplified) and returns the
+    * It gets the matrix of preferences (simplified) and returns the
     * list of all the possible solutions, valid or not.
     */
   def generateSolutionCombinations[T](ls:List[List[T]]): List[List[T]] = ls match {
@@ -93,7 +93,7 @@ object Solver {
 
   /**
     * In case there are missing colors in the final solution, we have
-    * to fill it with the matte version of those missing colors.
+    * to fill it with the gloss version of those colors.
     */
   def fillMissingColors(solution: Preferences, numColors:Int): Preferences ={
     val missingColors =
