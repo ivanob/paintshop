@@ -8,7 +8,7 @@ object Solver {
   /**
     * Checks if there is any conflict in the list of single preferences.
     * Single preferences come from the customers who only have one preference, so they will
-    * always be part of the final solution (in case that there is a solution).
+    * always be part of the final solution (in case there is a solution).
     *
     * If there are 2 customers who want the same color in different taste,
     * then there is an inconsistency and returns false.
