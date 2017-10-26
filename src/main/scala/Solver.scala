@@ -30,6 +30,10 @@ object Solver {
     filtered.map(x => x.filter(y => !optionsTaken.contains(y._1))).filter(!_.isEmpty)
   }
 
+  def removeSatisfiedCustomers(pref: UsersPreferences, singlePrefs: Preferences): UsersPreferences = {
+    pref.filter(x => x.exists(y => singlePrefs.contains(y)) == false)
+  }
+
   /**
     * This function removes recursively single preferences from the customer matrix, and
     * returns that simplified matrix and the partial solution found so far. Every time we
@@ -44,11 +48,12 @@ object Solver {
   def simplifyMatrix(pref: UsersPreferences): Option[(Preferences,UsersPreferences)] = {
     pref.filter(_.length==1).flatten match {
       case Nil => Some(Nil,pref)
-      case xs => {
-        if(!existsSolution(xs)) None else {
-          val simplifiedPref = removeSinglePreferences(pref, xs)
+      case singlePrefs => {
+        if(!existsSolution(singlePrefs)) None else {
+          val reducedPref = removeSatisfiedCustomers(pref, singlePrefs)
+          val simplifiedPref = removeSinglePreferences(reducedPref, singlePrefs)
           simplifyMatrix(simplifiedPref) match {
-            case Some(y) => Some((xs.distinct:::y._1, y._2))
+            case Some(y) => Some((singlePrefs.distinct:::y._1, y._2))
             case None => None
           }
         }

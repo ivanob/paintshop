@@ -88,4 +88,20 @@ class SolverTest extends FunSuite {
     val partialSolution = List( (1,'G), (3,'M))
     assert(fillMissingColors(partialSolution, 5) == List( (1,'G), (2,'G), (3,'M), (4,'G), (5,'G) ))
   }
+
+  test("test of removeSatisfiedCustomers(...)"){
+    {
+      val userPrefs = List( List((1,'M),(2,'M),(3,'M)), List((1,'G),(2,'M)), List((3,'M),(1,'G)) )
+      val singlePrefs = List( (2,'M), (1,'M) )
+      val expectedResult = List( List((3,'M),(1,'G)) )
+      assert(removeSatisfiedCustomers(userPrefs, singlePrefs) == expectedResult)
+    }
+    {
+      val userPrefs = List( List((1,'M),(2,'M),(3,'M)), List((1,'G),(2,'M)), List((3,'G),(1,'G)) )
+      val singlePrefs = List( (3,'G) )
+      val expectedResult = List( List((1,'M),(2,'M),(3,'M)), List((1,'G),(2,'M)) )
+      assert(removeSatisfiedCustomers(userPrefs, singlePrefs) == expectedResult)
+    }
+
+  }
 }
