@@ -109,14 +109,22 @@ object Solver {
     completeSol.sortBy(_._1)
   }
 
+  def hasSolution(prefs: UsersPreferences): Boolean ={
+    val numColours = if (!prefs.isEmpty) prefs.map(_.length).max else 0
+    val numCustomers = prefs.length
+    numColours>=numCustomers
+  }
+
   def solve(userPrefs: UsersPreferences, numColors: Int): Option[Preferences] = {
     simplifyMatrix(userPrefs) match {
       case None => None
       case Some(simplified) => {
-        val comb = generateSolutionCombinations(simplified._2)
-        val validCombs = comb.filter(x => isValidSolution(x))
-        val optimal = getOptimalSolution(validCombs)
-        Some(fillMissingColors(optimal:::simplified._1, numColors))
+        if(hasSolution(simplified._2)) {
+          val comb = generateSolutionCombinations(simplified._2)
+          val validCombs = comb.filter(x => isValidSolution(x))
+          val optimal = getOptimalSolution(validCombs)
+          Some(fillMissingColors(optimal ::: simplified._1, numColors))
+        } else None
       }
     }
   }

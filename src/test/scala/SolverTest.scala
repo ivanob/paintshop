@@ -102,6 +102,12 @@ class SolverTest extends FunSuite {
       val expectedResult = List( List((1,'M),(2,'M),(3,'M)), List((1,'G),(2,'M)) )
       assert(removeSatisfiedCustomers(userPrefs, singlePrefs) == expectedResult)
     }
+  }
 
+  test("test about non possible scenarios"){
+    {
+      val userPrefs = List( List((1,'M),(2,'M)), List((1,'G),(2,'M)), List((1,'M),(2,'G)) )
+      assert(solve(userPrefs,2) == None)
+    }
   }
 }
