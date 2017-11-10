@@ -109,5 +109,39 @@ class SolverTest extends FunSuite {
       val userPrefs = List( List((1,'M),(2,'M)), List((1,'G),(2,'M)), List((1,'M),(2,'G)) )
       assert(solve(userPrefs,2) == None)
     }
+    {
+      val userPrefs = List( List((1,'M),(2,'M)), List((1,'M),(2,'G)), List((1,'G)) )
+      assert(solve(userPrefs,2) == None)
+    }
+    {
+      val userPrefs = List( List((1,'G),(2,'M)), List((1,'M),(2,'G)), List((1,'G),(2,'M)) )
+      assert(solve(userPrefs,2) == None)
+    }
+  }
+
+  test("test with solution"){
+    {
+      val userPrefs = List( List((1,'M),(2,'M)), List((1,'G),(2,'G)), List((3,'M)) )
+      assert(solve(userPrefs,3) == Some(List((1,'M), (2,'G), (3,'M))))
+    }
+    {
+      val userPrefs = List( List((1,'M),(2,'M)), List((1,'M),(2,'G)), List((1,'M)) )
+      assert(solve(userPrefs,3) == Some(List((1,'M), (2,'G), (3,'G))))
+    }
+    {
+      val userPrefs = List( List((1,'M),(2,'M),(3,'G),(4,'M)))
+      assert(solve(userPrefs,4) == Some(List((1,'G),(2,'G),(3,'G),(4,'G))))
+    }
+  }
+
+  test("test for the function generateSolutionCombinations(...)"){
+    {
+      val prefs = List( List((1,'G),(2,'G)),  List((1,'M),(2,'M)) )
+      assert(generateSolutionCombinations(prefs)==List( List((1,'G), (2,'M)), List((2,'G), (1,'M))))
+    }
+    {
+      val prefs = List( List((1,'M),(2,'M),(3,'G),(4,'M)) )
+      assert(generateSolutionCombinations(prefs) == List( List((1,'M)), List((2,'M)), List((3,'G)), List((4,'M))))
+    }
   }
 }

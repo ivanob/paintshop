@@ -65,10 +65,23 @@ object Solver {
     * It gets the matrix of preferences (simplified) and returns the
     * list of all the possible solutions, valid or not.
     */
-  def generateSolutionCombinations[T](ls:List[List[T]]): List[List[T]] = ls match {
+  /*def generateSolutionCombinations[T](ls:List[List[T]]): List[List[T]] = ls match {
     case Nil => Nil::Nil
     case head :: tail => val rec = generateSolutionCombinations[T](tail)
       rec.flatMap(r => head.map(t => t::r))
+  }*/
+  def generateSolutionCombinations(prefs: UsersPreferences): UsersPreferences = {
+    def go(prefs: UsersPreferences): UsersPreferences = prefs match {
+      case x :: xs => {
+        for {
+          p <- x
+          i <- List(p) :: go(removeSinglePreferences(removeSatisfiedCustomers(prefs, List(p)), List(p)))
+          //if(isValidSolution(i))
+        } yield (i)
+      }
+      case Nil => Nil
+    }
+    go(prefs).flatten.grouped(prefs.length).toList
   }
 
   /**
@@ -119,7 +132,8 @@ object Solver {
     simplifyMatrix(userPrefs) match {
       case None => None
       case Some(simplified) => {
-        if(hasSolution(simplified._2)) {
+        if(simplified._2.isEmpty) Some(fillMissingColors(simplified._1, numColors))
+        else if(hasSolution(simplified._2)) {
           val comb = generateSolutionCombinations(simplified._2)
           val validCombs = comb.filter(x => isValidSolution(x))
           val optimal = getOptimalSolution(validCombs)
