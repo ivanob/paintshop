@@ -4,6 +4,8 @@ object Solver {
   type Color = (Int,Symbol)
   type Preferences = List[Color]
   type UsersPreferences = List[Preferences]
+  type Solution = List[Color]
+  type Solutions = List[Solution]
 
   /**
     * Checks if there is any conflict in the list of single preferences.
@@ -70,14 +72,19 @@ object Solver {
     case head :: tail => val rec = generateSolutionCombinations[T](tail)
       rec.flatMap(r => head.map(t => t::r))
   }*/
+
+  def removeAlreadySelectedCombination(prefs : UsersPreferences, color: Color): UsersPreferences = {
+    prefs.map(x => x.filter(p => p._1!=color._1)).filter(!_.isEmpty)
+  }
+
   def generateSolutionCombinations(prefs: UsersPreferences): UsersPreferences = {
     def go(prefs: UsersPreferences): UsersPreferences = prefs match {
+      case x :: Nil => x.map(x => List(x))
       case x :: xs => {
-        for {
-          p <- x
-          i <- List(p) :: go(removeSinglePreferences(removeSatisfiedCustomers(prefs, List(p)), List(p)))
-          //if(isValidSolution(i))
-        } yield (i)
+        x.flatMap(p => {
+          val e = go(removeAlreadySelectedCombination(removeSatisfiedCustomers(prefs, List(p)), p))
+          e.map(y => y:::List(p))
+        })
       }
       case Nil => Nil
     }
@@ -90,7 +97,7 @@ object Solver {
     * ((1 M)(2 G)(1 G)) because the color 1 can not be produced
     * in M and G at the same time.
     */
-  def isValidSolution(solution: Preferences): Boolean = {
+  def isValidSolution(solution: Solution): Boolean = {
     solution.length == solution.groupBy(_._1).toList.length
   }
 

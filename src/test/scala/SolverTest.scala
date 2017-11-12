@@ -41,12 +41,6 @@ class SolverTest extends FunSuite {
     assert(simplifyMatrix(pref4) == Some(List((1,'G)), List(List((2,'G),(3,'G)), List((2,'M), (3,'M)))) )
   }
 
-  test("test of the combinationList generator"){
-    val pref = List( List( (1,'M),(2,'M) ), List( (1,'M), (2,'G) ) )
-    assert(generateSolutionCombinations(pref) == List( List( (1,'M),(1,'M) ), List( (2,'M),(1,'M) ),
-      List( (1,'M),(2,'G) ), List( (2,'M),(2,'G) )) )
-  }
-
   test("test of isValidSolution function"){
     //is Not valid as colour 1 has 2 different variances
     val solution = List((1,'G), (2,'M), (1,'M))
@@ -117,6 +111,10 @@ class SolverTest extends FunSuite {
       val userPrefs = List( List((1,'G),(2,'M)), List((1,'M),(2,'G)), List((1,'G),(2,'M)) )
       assert(solve(userPrefs,2) == None)
     }
+    {
+      val userPrefs = List( List((1,'M)), List((3,'M)), List((1,'G)) )
+      assert(solve(userPrefs,3) == None)
+    }
   }
 
   test("test with solution"){
@@ -134,14 +132,49 @@ class SolverTest extends FunSuite {
     }
   }
 
+  test("removeAlreadySelectedCombination"){
+    {
+      val prefs = List( List((1,'G),(2,'G)), List((1,'M)), List((4,'G),(5,'M)) )
+      assert(removeAlreadySelectedCombination(prefs, (1,'M))==List( List((2,'G)), List((4,'G),(5,'M)) ))
+    }
+  }
+
   test("test for the function generateSolutionCombinations(...)"){
     {
+      val prefs = List( List((1,'G),(2,'G)) )
+      assert(generateSolutionCombinations(prefs)==List( List( (1,'G)), List((2,'G)) ))
+    }
+    {
       val prefs = List( List((1,'G),(2,'G)),  List((1,'M),(2,'M)) )
-      assert(generateSolutionCombinations(prefs)==List( List((1,'G), (2,'M)), List((2,'G), (1,'M))))
+      assert(generateSolutionCombinations(prefs)==List(List((2,'M), (1,'G)), List((1,'M), (2,'G))))
     }
     {
       val prefs = List( List((1,'M),(2,'M),(3,'G),(4,'M)) )
       assert(generateSolutionCombinations(prefs) == List( List((1,'M)), List((2,'M)), List((3,'G)), List((4,'M))))
+    }
+    {
+      val prefs = List( List((3,'M),(4,'M),(5,'M),(6,'M)), List((1,'M)) )
+      assert(generateSolutionCombinations(prefs) == List(List((1,'M), (3,'M)), List((1,'M), (4,'M)),
+        List((1,'M), (5,'M)), List((1,'M), (6,'M))))
+    }
+    {
+      val prefs = List( List((1,'M)), List((3,'M),(4,'M),(5,'M),(6,'M)) )
+      assert(generateSolutionCombinations(prefs) == List(List((3,'M), (1,'M)), List((4,'M), (1,'M)),
+        List((5,'M), (1,'M)), List((6,'M), (1,'M))))
+    }
+    {
+      val prefs = List( List((1,'M),(2,'M)), List((3,'M),(4,'M),(5,'M),(6,'M)) )
+      assert(generateSolutionCombinations(prefs) == List(List((3,'M), (1,'M)), List((4,'M), (1,'M)), List((5,'M), (1,'M)),
+        List((6,'M), (1,'M)), List((3,'M), (2,'M)), List((4,'M), (2,'M)),
+        List((5,'M), (2,'M)), List((6,'M), (2,'M))))
+    }
+    {
+      val prefs = List( List((1,'M)), List((3,'M)), List((1,'G)) )
+      assert(generateSolutionCombinations(prefs) == List(List((3,'M), (1,'M))))
+    }
+    {
+      val pref = List( List( (1,'M),(2,'M) ), List( (1,'M), (2,'G) ) )
+      assert(generateSolutionCombinations(pref) == List(List((1,'M), (2,'M))) )
     }
   }
 }
