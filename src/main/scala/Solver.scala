@@ -63,16 +63,6 @@ object Solver {
     }
   }
 
-  /**
-    * It gets the matrix of preferences (simplified) and returns the
-    * list of all the possible solutions, valid or not.
-    */
-  /*def generateSolutionCombinations[T](ls:List[List[T]]): List[List[T]] = ls match {
-    case Nil => Nil::Nil
-    case head :: tail => val rec = generateSolutionCombinations[T](tail)
-      rec.flatMap(r => head.map(t => t::r))
-  }*/
-
   def removeAlreadySelectedCombination(prefs : UsersPreferences, color: Color): UsersPreferences = {
     prefs.map(x => x.filter(p => p._1!=color._1)).filter(!_.isEmpty)
   }
