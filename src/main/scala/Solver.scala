@@ -103,7 +103,7 @@ object Solver {
     validSolutions.sortWith((l,r) => countNumberOfGlossColours(l)>countNumberOfGlossColours(r)).head
   }
 
-  def countNumberOfGlossColours(pref: Preferences):Int ={
+  def countNumberOfGlossColours(pref: Solution):Int ={
     pref.groupBy(_._2).get('G) match {
       case Some(x) => x.length
       case None => 0
