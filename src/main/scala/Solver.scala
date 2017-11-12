@@ -77,7 +77,7 @@ object Solver {
     prefs.map(x => x.filter(p => p._1!=color._1)).filter(!_.isEmpty)
   }
 
-  def generateSolutionCombinations(prefs: UsersPreferences): UsersPreferences = {
+  def generateSolutionCombinations(prefs: UsersPreferences): Solutions = {
     def go(prefs: UsersPreferences): UsersPreferences = prefs match {
       case x :: Nil => x.map(x => List(x))
       case x :: xs => {
@@ -105,7 +105,7 @@ object Solver {
     * It returns the best solution from the list of all possible valid solutions. This
     * is the one with the maximum number of gloss colors (which are cheaper to generate).
     */
-  def getOptimalSolution(validSolutions: List[Preferences]): Preferences ={
+  def getOptimalSolution(validSolutions: Solutions): Solution ={
     validSolutions.sortWith((l,r) => countNumberOfGlossColours(l)>countNumberOfGlossColours(r)).head
   }
 
@@ -120,7 +120,7 @@ object Solver {
     * In case there are missing colors in the final solution, we have
     * to fill it with the gloss version of those colors.
     */
-  def fillMissingColors(solution: Preferences, numColors:Int): Preferences ={
+  def fillMissingColors(solution: Solution, numColors:Int): Preferences ={
     val missingColors =
       for{ i<- 1 to numColors
          if(!solution.exists(_._1==i))

@@ -176,5 +176,14 @@ class SolverTest extends FunSuite {
       val pref = List( List( (1,'M),(2,'M) ), List( (1,'M), (2,'G) ) )
       assert(generateSolutionCombinations(pref) == List(List((1,'M), (2,'M))) )
     }
+    {
+      val pref = List( List( (1,'M),(2,'M) ), List( (1,'M) ) )
+      assert(generateSolutionCombinations(pref) == List(List((1,'M), (2,'M))) )
+    }
+    {
+      val pref = List( List( (1,'M) ), List( (2,'M) ),  List( (3,'M),(4,'M) ))
+      assert(generateSolutionCombinations(pref) == List(List((3,'M), (2,'M), (1,'M)),
+        List((4,'M), (2,'M), (1,'M))) )
+    }
   }
 }
