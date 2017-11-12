@@ -32,8 +32,12 @@ object Solver {
     filtered.map(x => x.filter(y => !optionsTaken.contains(y._1))).filter(!_.isEmpty)
   }
 
-  def removeSatisfiedCustomers(pref: UsersPreferences, singlePrefs: Preferences): UsersPreferences = {
-    pref.filter(x => x.exists(y => singlePrefs.contains(y)) == false)
+  /**
+    * If the partial solution contains colours that satisfy a customer, then we remove
+    * that customer from the list as we wont bother with his preferences anymore
+    */
+  def removeSatisfiedCustomers(pref: UsersPreferences, partialSolution: Preferences): UsersPreferences = {
+    pref.filter(x => x.exists(y => partialSolution.contains(y)) == false)
   }
 
   /**
@@ -67,7 +71,7 @@ object Solver {
     prefs.map(x => x.filter(p => p._1!=color._1)).filter(!_.isEmpty)
   }
 
-  def generateSolutionCombinations(prefs: UsersPreferences): Solutions = {
+  def generatePotentialSolution(prefs: UsersPreferences): Solutions = {
     def go(prefs: UsersPreferences): UsersPreferences = prefs match {
       case x :: Nil => x.map(x => List(x))
       case x :: xs => {
@@ -125,13 +129,29 @@ object Solver {
     numColours>=numCustomers
   }
 
+  /**
+    * The solve algorithm works in 2 steps:
+    * - Firs of all, it tries to simplify the matrix of preferences as much as possible. This process
+    * consist in selecting as part of the solution the preferences of those customers which only
+    * has one preference. This will produce a partial solution (or None if it is not possible to resolve).
+    *
+    * - On the second step we have 2 things: The simplified matrix and a partial solution. We can not keep
+    * simplifying because we have to take a decision here as there are customers with different tastes. To
+    * do that, we generate all the potential solutions and then we pick the optimal one.
+    *
+    * To generate a potential solution from a simplified matrix of preferences I list all the
+    * possible combinations of preferences that could be a solution. It is important to know that, during the
+    * process, if we pick one of the preferences of a customer it could affect the others: they could be happy
+    * with that colour so we can ignore their preferences for that particular solution. Important: the solutions
+    * generated here could not be valid. The function isValidSolution will decide if it is correct or not.
+    */
   def solve(userPrefs: UsersPreferences, numColors: Int): Option[Preferences] = {
     simplifyMatrix(userPrefs) match {
       case None => None
       case Some(simplified) => {
         if(simplified._2.isEmpty) Some(fillMissingColors(simplified._1, numColors))
         else if(hasSolution(simplified._2)) {
-          val comb = generateSolutionCombinations(simplified._2)
+          val comb = generatePotentialSolution(simplified._2)
           val validCombs = comb.filter(x => isValidSolution(x))
           val optimal = getOptimalSolution(validCombs)
           Some(fillMissingColors(optimal ::: simplified._1, numColors))
