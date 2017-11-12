@@ -5,8 +5,8 @@ import scala.io.Source
 object Main {
 
   def main(args: Array[String]): Unit = {
-    val c = readConstraintsFromFile("assets/input6.txt")
-    //val c = readConstraintsFromFile(args(0))
+    //val c = readConstraintsFromFile("assets/input6.txt")
+    val c = readConstraintsFromFile(args(0))
     Solver.solve(c.preferences, c.numColors) match {
       case None => println("No solution exists")
       case Some(sol) => println(sol)

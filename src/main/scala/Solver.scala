@@ -110,7 +110,7 @@ object Solver {
     * In case there are missing colors in the final solution, we have
     * to fill it with the gloss version of those colors.
     */
-  def fillMissingColors(solution: Solution, numColors:Int): Preferences ={
+  def fillMissingColors(solution: Solution, numColors:Int): Solution ={
     val missingColors =
       for{ i<- 1 to numColors
          if(!solution.exists(_._1==i))
